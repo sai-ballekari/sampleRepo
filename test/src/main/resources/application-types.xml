@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="json" format="json">
+      <types:shape format="weave" example="examples/json_input.json"><![CDATA[%dw 2.0
+
+type json = {|
+  firstName: String, 
+  lastName: String, 
+  company: String
+|} {"example": "{\\\"firstName\\\":\\\"sai\\\",\\\"lastName\\\":\\\"ballekari\\\",\\\"company\\\":\\\"accenture\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="json_array" format="json">
+      <types:shape format="weave" example="examples/json_input_array.json"><![CDATA[%dw 2.0
+
+type json_array = {|
+  entries: Array<{|    FirstName: String,     LastName: String,     Company: String,     Email: String  |}>
+|} {"example": "{\\\"entries\\\":[{\\\"FirstName\\\":\\\"Max\\\",\\\"LastName\\\":\\\"Mule\\\",\\\"Company\\\":\\\"MuleSoft\\\",\\\"Email\\\":\\\"maxthemule@mulesoft.com\\\"},{\\\"FirstName\\\":\\\"Astro\\\",\\\"LastName\\\":\\\"Nomical\\\",\\\"Company\\\":\\\"Salesforce\\\",\\\"Email\\\":\\\"astro@salesforce.com\\\"},{\\\"FirstName\\\":\\\"Cloudy\\\",\\\"LastName\\\":\\\"the Goat\\\",\\\"Company\\\":\\\"Salesforce\\\",\\\"Email\\\":\\\"cloudy@salesforce.com\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#4046b896-0370-4c92-a990-1d6c6066fc75">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="json"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#768038b7-475a-49ae-8ef8-5e21ce3da865">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="json_array"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

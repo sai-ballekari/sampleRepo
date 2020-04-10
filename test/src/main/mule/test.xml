@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6f5b71ef-9d0c-4740-8ebb-dd45de673d40" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="testFlow" doc:id="6b4d06cc-119c-4169-a2cf-11cc3a3496e2" >
+		<http:listener doc:name="Listener" doc:id="336ac258-6d6c-4d54-be25-fc04fee388f9" config-ref="HTTP_Listener_config" path="/test"/>
+		<ee:transform doc:name="Transform Message contact" doc:id="4046b896-0370-4c92-a990-1d6c6066fc75" doc:description="" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+fun check(arg)= if(arg =="sai") "match" else "no match"
+fun check2(arg) = arg match{
+	case literalMatch : "sai" -> "Match"
+	case literalMatch : "sai2" -> "Match2"
+	else -> $
+	}
+---
+{
+"name" : payload.firstName,
+//comment // "company": using(mname = "ram" ) upper(payload.company) ++ upper(mname) 
+
+"company": check2(payload.firstName)
+
+
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="a11c3d42-c534-499f-a81d-fbbd9b3fe24a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output text/plain
+fun check(arg)= do {
+	var name = arg.name
+	var company= arg.company
+	var companyNamecontains = arg.company contains("ACCENTURE")
+---
+ if(companyNamecontains == true ) name ++ "working in accenture " else 
+ name ++ "not working in accenture"
+}
+---
+{
+"function_with_do" : check(payload),
+
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="05c5dfc1-98b6-4565-9e67-e6146ef51849" message="====#[payload]======="/>
+	</flow>
+	<flow name="testFlow1" doc:id="9a5a1ff2-18fc-410e-9b0d-72025775161e" >
+		<http:listener doc:name="Listener" doc:id="2995ebd7-bd1e-42d6-bcd7-46d30f2a2324" config-ref="HTTP_Listener_config" path="/dwl"/>
+		<ee:transform doc:name="Transform Message" doc:id="cfbfde64-633b-4273-997f-6f9eb5e065ee" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload reduce ((item,acc=3) -> acc* item)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="42e20dec-b095-44ad-af25-7c90c366a5a0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload filterObject ((value, key) ->
+	 value >=2)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="d5fff808-1f93-4bed-8336-b39aba27a2cb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+
+payload filter((item, index) -> 
+	item >=1)
+ ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="c28da193-864f-4da5-ad6f-376106927896" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload.accountType[0] pluck (value, key)->{
+	"index" : (key),
+	"value" : (value)	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="dd6cd842-36df-4741-a28e-bd5853ed7afa" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+/* 
+payload.accountType.*admins map {
+	"index" :$$,
+	"accountInfo" : $.Name ++ $.Company
+}
+
+}
+*/
+payload
+	
+	
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="30308946-6c6f-438a-a983-08fc95011922" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="768038b7-475a-49ae-8ef8-5e21ce3da865" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload.entries[?($."Company" == "MuleSoft")]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="a3b941d0-0716-467f-b381-c4295f88e2f1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map (item, index) ->{
+
+"No" : index,
+"fullName" : item.FirstName ++ " " ++ item.LastName,
+"email" : item.Email
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

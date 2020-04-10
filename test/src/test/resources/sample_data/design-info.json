@@ -1,0 +1,31 @@
+{
+  "sampleData": {
+    "a11c3d42-c534-499f-a81d-fbbd9b3fe24a": {
+      "payload": "sample_data/json.json"
+    },
+    "4046b896-0370-4c92-a990-1d6c6066fc75": {
+      "payload": "sample_data/list_json.json"
+    },
+    "768038b7-475a-49ae-8ef8-5e21ce3da865": {
+      "payload": "sample_data/json_1.json"
+    },
+    "a3b941d0-0716-467f-b381-c4295f88e2f1": {
+      "payload": "sample_data/list_json_1.json"
+    },
+    "dd6cd842-36df-4741-a28e-bd5853ed7afa": {
+      "payload": "sample_data/unknown.dwl"
+    },
+    "c28da193-864f-4da5-ad6f-376106927896": {
+      "payload": "sample_data/unknown_1.dwl"
+    },
+    "d5fff808-1f93-4bed-8336-b39aba27a2cb": {
+      "payload": "sample_data/unknown_2.dwl"
+    },
+    "42e20dec-b095-44ad-af25-7c90c366a5a0": {
+      "payload": "sample_data/unknown_3.dwl"
+    },
+    "cfbfde64-633b-4273-997f-6f9eb5e065ee": {
+      "payload": "sample_data/unknown_4.dwl"
+    }
+  }
+}

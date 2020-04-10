@@ -1,0 +1,23 @@
+{
+  "entries": [
+    {
+      "FirstName": "Max",
+      "LastName": "Mule",
+      "Company": "MuleSoft",
+      "Email": "maxthemule@mulesoft.com"
+    },
+    {
+      "FirstName": "Astro",
+      "LastName": "Nomical",
+      "Company": "Salesforce",
+      "Email": "astro@salesforce.com"
+    },
+    {
+      "FirstName": "Cloudy",
+      "LastName": "the Goat",
+      "Company": "Salesforce",
+      "Email": "cloudy@salesforce.com"
+    }
+  ]
+}
+
